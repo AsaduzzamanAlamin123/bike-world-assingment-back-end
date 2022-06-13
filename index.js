@@ -34,8 +34,25 @@ async function run(){
             const query = {_id: ObjectId(id)};
             const result = await bikeCollection.findOne(query);
             res.send(result);
+        });
+        app.post('/bike', async(req , res)=>{
+            const newInformation = req.body;
+            const result = await bikeCollection.insertOne(newInformation);
+            res.send(result)
         })
         
+        app.put('/bikee/:id' , async(req , res)=>{
+            const id = req.params.id;
+            const updateQuantity = req.body;
+            const filter = {_id: ObjectId(id)};
+            const options = {upsert: true};
+            const updatedDoc = {
+                $set:{updateQuantity}
+            }
+            const result = await bikeCollection.updateOne(filter , updatedDoc , options);
+            res.send(result)
+
+        })
 
     }
     finally{
